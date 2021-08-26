@@ -3,6 +3,7 @@ package com.example.gatromanagerclient;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -23,11 +26,11 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gatromanagerclient.databinding.ActivityMain2Binding;
 import com.example.gatromanagerclient.socket.Client;
 import com.example.gatromanagerclient.util.Constants;
 import com.example.gatromanagerclient.util.SaxParserForGastromanager;
@@ -42,6 +45,7 @@ import com.gastromanager.models.OrderItemInfo;
 import com.gastromanager.models.SelectedOrderItem;
 import com.gastromanager.models.SelectedOrderItemOption;
 import com.gastromanager.models.SignOffOrderInfo;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,19 +60,18 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity2 extends AppCompatActivity implements OrderListAdapter.OrderItemClickListener {
 
     private AppBarConfiguration appBarConfiguration;
-    private ActivityMain2Binding binding;
     private RecyclerView orderDetailsView;
-    private Button fetchOrderDetailsButton;
+    private AppCompatButton fetchOrderDetailsButton;
     private MenuDetail menuDetail;
     private Stack<String> orderSelectionStack;
     private AbsoluteLayout menuView;
     private LinearLayout menuOptionsView;
     private Map<String, String> optionsSelectionMap;
-    EditText orderIdInputTextField;
-    EditText floorIdInputTextField;
-    EditText tableIdInputTextField;
+    TextInputEditText orderIdInputTextField;
+    TextInputEditText floorIdInputTextField;
+    TextInputEditText tableIdInputTextField;
     EditText menuIdInputTextField;
-    private Button selectMenuIdButton;
+    private AppCompatButton selectMenuIdButton;
     private SelectedOrderItem mainSelectedOrderItem;
     private OrderListAdapter orderListAdapter;
     private List<OrderItemInfo> orderItemInfoList  = new ArrayList<>();
@@ -78,9 +81,8 @@ public class MainActivity2 extends AppCompatActivity implements OrderListAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.acitvity_order_screen);
 
-        binding = ActivityMain2Binding.inflate(getLayoutInflater());
         //Order details view
         orderDetailsView = (RecyclerView) findViewById(R.id.textView2);
         orderListAdapter = new OrderListAdapter(orderItemInfoList, this);
@@ -93,18 +95,18 @@ public class MainActivity2 extends AppCompatActivity implements OrderListAdapter
         floorIdInputTextField = findViewById(R.id.floorIdInputTextField);
         tableIdInputTextField = findViewById(R.id.tableIdInputTextField);
         tableIdInputTextField.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus) {
-                if(floorIdInputTextField.getText() != null &&
-                tableIdInputTextField.getText() != null) {
-                    String floorId = floorIdInputTextField.getText().toString();
-                    String tableId = tableIdInputTextField.getText().toString();
-                    if(!floorId.trim().equals(Constants.EMPTY_RESULT)
-                            && !tableId.trim().equals(Constants.EMPTY_RESULT)) {
-new GetHumanReadableOrderIdTask().execute();
+                    if(!hasFocus) {
+                        if(floorIdInputTextField.getText() != null &&
+                                tableIdInputTextField.getText() != null) {
+                            String floorId = floorIdInputTextField.getText().toString();
+                            String tableId = tableIdInputTextField.getText().toString();
+                            if(!floorId.trim().equals(Constants.EMPTY_RESULT)
+                                    && !tableId.trim().equals(Constants.EMPTY_RESULT)) {
+                                new GetHumanReadableOrderIdTask().execute();
+                            }
+                        }
                     }
                 }
-            }
-        }
 
         );
         menuIdInputTextField = findViewById(R.id.menuIdInputTextField);
@@ -121,7 +123,7 @@ new GetHumanReadableOrderIdTask().execute();
         );
 
         //Previous
-        Button prevOverButton = findViewById(R.id.prevOrderButton);
+        ImageView prevOverButton = findViewById(R.id.prevOrderButton);
         prevOverButton.setOnClickListener(v -> {
                     System.out.println("inside get previous order");
                     orderDetailsView.removeAllViews();
@@ -140,7 +142,7 @@ new GetHumanReadableOrderIdTask().execute();
         );
 
         //Next
-        Button nextOverButton = findViewById(R.id.nextOrderButton);
+        ImageView nextOverButton = findViewById(R.id.nextOrderButton);
         nextOverButton.setOnClickListener(v -> {
                     System.out.println("inside get previous order");
                     //orderDetailsView.setText("");
@@ -154,7 +156,7 @@ new GetHumanReadableOrderIdTask().execute();
                                 orderIdInputTextField.getText().toString() : null;
                     }
 
-                   buildAndSendOrderQuery(inputOrderId);
+                    buildAndSendOrderQuery(inputOrderId);
                 }
         );
         //Drill down menu
@@ -193,7 +195,7 @@ new GetHumanReadableOrderIdTask().execute();
             menuOptionsView.removeAllViews();
         });*/
 
-        Button newOrderIdButton = findViewById(R.id.newOrderButton);
+        AppCompatButton newOrderIdButton = findViewById(R.id.newOrderButton);
         newOrderIdButton.setOnClickListener(v -> {
             //orderDetailsView.setText("");
             new GetNextOrderIdTask().execute();
@@ -219,7 +221,7 @@ new GetHumanReadableOrderIdTask().execute();
 
         });
 
-        Button signOffOrderButton = findViewById(R.id.signOffOrderButton);
+        AppCompatButton signOffOrderButton = findViewById(R.id.signOffOrderButton);
         signOffOrderButton.setOnClickListener(v -> {
             sendSignOffOrderRequest();
         });
@@ -227,7 +229,7 @@ new GetHumanReadableOrderIdTask().execute();
 
     private Boolean checkIfItemIsReadyForSelection(SelectedOrderItem selectedOrderItem) {
         return (selectedOrderItem.getSubItems() != null && selectedOrderItem.getSubItems().size() == 1
-                 && selectedOrderItem.getSubItems().get(0).getAllOptions() == null);
+                && selectedOrderItem.getSubItems().get(0).getAllOptions() == null);
 
     }
 
@@ -403,14 +405,14 @@ new GetHumanReadableOrderIdTask().execute();
                 menuButtonView.setY(Float.parseFloat(yCoord.toString()));
                 yCoord = yCoord + Integer.parseInt(menuButton.getHeight()) + Constants.BUTTON_SPACING;
             }
+
             menuButtonView.setText(menuButton.getName());
-            System.out.println(" Menu Button  " + menuButton.getName() + " width " + menuButton.getWidth()
-                    + " height " + menuButton.getHeight() + " x " + menuButton.getxPosition() + " y " + menuButton.getyPosition()
-                    + " X " + menuButtonView.getX() + " Y " + menuButtonView.getY());
             menuButtonView.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 public void onClick(View v) {
                     // your handler code here
+                    menuOptionsView.setVisibility(View.VISIBLE);
+                    menuOptionsView.removeAllViews();
                     CharSequence itemName = menuButtonView.getText();
                     System.out.println("main item " + itemName);
                     mainSelectedOrderItem = null;
@@ -440,9 +442,7 @@ new GetHumanReadableOrderIdTask().execute();
                     }
                 }
             });
-
             view.addView(menuButtonView);
-            System.out.println(" Test X " + xCoord + " Y " + yCoord);
 
         }
     }
@@ -513,6 +513,7 @@ new GetHumanReadableOrderIdTask().execute();
         new AddOrderItemTask().execute(selectedOrderItem);
         reloadOrderItemView();
         menuOptionsView.removeAllViews();
+        menuOptionsView.setVisibility(View.INVISIBLE);
     }
 
     public void showMessage(String message) {
@@ -659,8 +660,8 @@ new GetHumanReadableOrderIdTask().execute();
                                 loadMenuSubItems(subItem, menuOptionsView, menuItemName, currSelectedOrderItem);
                             } else if(subItem.getOptionsMap() != null && subItem.getOptionsMap().size() > 0) {
                                 if(mainSelectedOrderItem.getOption() != null &&
-                                    subItem.getOptionsMap().get(mainSelectedOrderItem.getOption().getName()).getId().equals
-                                            (mainSelectedOrderItem.getOption().getId())) {
+                                        subItem.getOptionsMap().get(mainSelectedOrderItem.getOption().getName()).getId().equals
+                                                (mainSelectedOrderItem.getOption().getId())) {
                                     currSelectedOrderItem.setOption(mainSelectedOrderItem.getOption());
                                     if(mainSelectedOrderItem != selectedOrderItem) {
                                         if (selectedOrderItem.getSubItems() == null) {

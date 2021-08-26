@@ -28,7 +28,7 @@ public class Client {
     public Client() {
         try {
             //send to server
-            socket = new Socket("192.168.1.8", serverPort);
+            socket = new Socket("192.168.1.6", serverPort);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 
