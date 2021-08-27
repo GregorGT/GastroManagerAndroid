@@ -20,6 +20,9 @@ public class OrderItemInfo implements Serializable {
     private Integer status;
     private Order order;
 
+    public OrderItemInfo() {
+    }
+
     public OrderItemInfo(OrderItem orderItem) {
         this.orderId = orderItem.getOrderId();
         this.itemId = orderItem.getItemId();
