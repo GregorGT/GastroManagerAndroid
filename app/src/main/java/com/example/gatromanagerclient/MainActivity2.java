@@ -239,6 +239,7 @@ public class MainActivity2 extends AppCompatActivity implements OrderListAdapter
         if(inputOrderId != null) {
             OrderDetailQuery orderDetailQuery = new OrderDetailQuery();
             orderDetailQuery.setHumanreadableId(inputOrderId);
+            orderDetailQuery.setServerName("Here comes the app name");
             if (floorIdInputTextField.getText() != null) {
                 orderDetailQuery.setFloorId(floorIdInputTextField.getText().toString());
             }
