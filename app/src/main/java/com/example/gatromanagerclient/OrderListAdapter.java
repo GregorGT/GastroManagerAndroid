@@ -9,6 +9,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,7 +54,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         // Inflate the custom layout
-        View listItemView = inflater.inflate(R.layout.list_item, parent, false);
+        View listItemView = inflater.inflate(R.layout.menu_row_item, parent, false);
 
         // Return a new holder instance
         ViewHolder listItemViewHolder = new ViewHolder(listItemView, orderItemClickListener);
@@ -66,16 +67,22 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Get the data model based on position
         OrderItemInfo orderItem = (OrderItemInfo) orderItems.get(position);
-        // Set item views based on your views and data model
-        holder.itemTextView.setText(orderItem.getXmlText());
-        holder.itemTextView.setBackgroundColor(R.color.white);
-        if(orderItem.getPrintStatus() == 1) {
-            holder.itemTextView.setBackgroundColor(0xFF12FF45); //0xFF12FF45 = GREEN
+        String xmlString = orderItem.getXmlText();
+
+        holder.ivEditBtn.setVisibility(View.GONE);
+        holder.ivDeleteBtn.setVisibility(View.GONE);
+        holder.ivPushBtn.setVisibility(View.GONE);
+
+        holder.tvItemName.setText(xmlString);
+        holder.tvItemPrice.setText(String.format("%s EURO", orderItem.getPrice().toString()));
+        if(orderItem.getPayed() == 0 && orderItem.getPrintStatus() != 1 ){
+            holder.llRootLayout.setClickable(true);
+            holder.llRootLayout.setBackgroundResource(R.drawable.black_rounder_rectangle);
+        } else {
+            holder.llRootLayout.setClickable(false);
+            holder.ivPushBtn.setVisibility(View.INVISIBLE);
+            holder.llRootLayout.setBackgroundResource(R.drawable.yellow_rounder_rectangle);
         }
-        /*holder.relativeLayout.setOnClickListener(view -> {
-            Toast.makeText(view.getContext(),"click on item: "+orderItem.getItemId(),Toast.LENGTH_LONG).show();
-            showMessage("Do you wish to remove item "+orderItem.getItemId(), orderItem, view);
-        });*/
     }
 
     public void showMessage(String message, OrderItemInfo orderItem, View view) {
@@ -107,11 +114,14 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
-        public TextView itemTextView;
-        public RelativeLayout relativeLayout;
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView tvItemName;
+        public TextView tvItemPrice;
+        public ImageView ivPushBtn;
+        public ImageView ivEditBtn;
+        public ImageView ivDeleteBtn;
+        public LinearLayout llRootLayout;
         public OrderItemClickListener orderItemClickListener;
 
         // We also create a constructor that accepts the entire item row
@@ -120,10 +130,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
-            this.relativeLayout = itemView.findViewById(R.id.relativeLayout);
-            this.itemTextView = (TextView) itemView.findViewById(R.id.orderItemRowView);
+            this.tvItemName = itemView.findViewById(R.id.tv_item_name);
+            this.tvItemPrice = itemView.findViewById(R.id.tv_item_price);
+            this.llRootLayout = itemView.findViewById(R.id.root_layout);
+            this.ivPushBtn = itemView.findViewById(R.id.iv_push_btn);
+            this.ivEditBtn = itemView.findViewById(R.id.iv_edit_btn);
+            this.ivDeleteBtn = itemView.findViewById(R.id.iv_delete_btn);
             this.orderItemClickListener = orderItemClickListener;
-
             itemView.setOnClickListener(this);
         }
 
