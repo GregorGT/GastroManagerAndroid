@@ -13,4 +13,6 @@
     <string name="floor">Floor</string>
     <string name="order_id">Order ID</string>
     <string name="table_id">Table Id</string>
+    <string name="port_number">Port Number</string>
+    <string name="server_ip">Server IP</string>
 </resources>

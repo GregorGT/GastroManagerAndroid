@@ -1,5 +1,6 @@
 package com.example.gatromanagerclient.socket;
 
+import com.example.gatromanagerclient.ui.splash.SplashActivity;
 import com.gastromanager.models.HumanReadableIdQuery;
 import com.gastromanager.models.MenuDetail;
 import com.gastromanager.models.OrderDetailQuery;
@@ -28,7 +29,7 @@ public class Client {
     public Client() {
         try {
             //send to server
-            socket = new Socket("192.168.1.6", serverPort);
+            socket = new Socket(SplashActivity.SERVER_IP, SplashActivity.SERVER_PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 
