@@ -16,6 +16,7 @@ public class SplashActivity extends AppCompatActivity {
     private ImageView splashView;
     public static String SERVER_IP = "";
     public static int SERVER_PORT = -1;
+    public static String NAME = "";
     public static boolean SERVER_IS_VALID = false;
 
     @Override
@@ -41,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     SERVER_IP = prefs.getString("serverIp", "192.168.1.5");
                     SERVER_PORT = prefs.getInt("serverPort", 5000);
+                    NAME = prefs.getString("name", "No Name");
                     SERVER_IS_VALID = prefs.getBoolean("isValid", false);
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);

@@ -53,6 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (!SplashActivity.SERVER_IP.isEmpty() && SplashActivity.SERVER_PORT != -1) {
             etServerIp.setText(SplashActivity.SERVER_IP);
             etPortNumber.setText(String.valueOf(SplashActivity.SERVER_PORT));
+            etWaiterName.setText(String.valueOf(SplashActivity.NAME));
             isValidServer = SplashActivity.SERVER_IS_VALID;
         }
 
@@ -82,10 +83,12 @@ public class SettingsActivity extends AppCompatActivity {
             isValidServer = true;
             SplashActivity.SERVER_IP = etServerIp.getText().toString();
             SplashActivity.SERVER_PORT = Integer.parseInt(etPortNumber.getText().toString());
+            SplashActivity.NAME = etWaiterName.getText().toString();
             SplashActivity.SERVER_IS_VALID = true;
 
             editor.putString("serverIp", etServerIp.getText().toString());
             editor.putInt("serverPort", Integer.parseInt(etPortNumber.getText().toString()));
+            editor.putString("name", etWaiterName.getText().toString());
             editor.putBoolean("isValid", true);
             editor.apply();
 
