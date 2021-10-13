@@ -1,51 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
+
+    <ImageView
+        android:id="@+id/splash_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Activity"/>
+        android:background="@drawable/splash_icon"
+        app:layout_constraintBottom_toTopOf="@id/orderingMenuButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/orderingMenuButton"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="100dp"
-        android:text="Ordering Menu" />
+        android:background="@drawable/custombutton"
+        android:text="Ordering Menu"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/paymentMenuButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splash_view"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_chainStyle="spread" />
 
-
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/paymentMenuButton"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="150dp"
+        android:background="@drawable/custombutton"
         android:text="Payments Menu"
-        android:layout_marginStart="250dp" />
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/orderingMenuButton"
+        app:layout_constraintBottom_toTopOf="@id/settingsMenuButton"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_chainStyle="spread" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/settingsMenuButton"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="150dp"
-        android:text="Settings Menu" />
+        android:background="@drawable/custombutton"
+        android:text="Settings"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/paymentMenuButton"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_chainStyle="spread" />
 
-    <!--<FrameLayout
-        android:id="@+id/parent_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="1200dp">
-
-        <Button
-            android:id="@+id/openActivity2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="250dp"
-            android:text="Open Activity 2" />
-    </FrameLayout>-->
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

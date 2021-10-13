@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.gatromanagerclient.ui.payment.PaymentActivity;
+import com.example.gatromanagerclient.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity implements ParentFragment.OnFragmentInteractionListener, ChildFragment.OnFragmentInteractionListener,
 SecondChildFragment.OnFragmentInteractionListener {
@@ -19,22 +21,27 @@ SecondChildFragment.OnFragmentInteractionListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Begin the transaction
-       /* FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.parent_fragment_container, new ParentFragment());
-        ft.commit();*/
-
-        Button btnPayment = findViewById(R.id.paymentMenuButton);
+        AppCompatButton btnPayment = findViewById(R.id.paymentMenuButton);
         btnPayment.setOnClickListener(v -> {
             Intent intent = new Intent(this, PaymentActivity.class);
             startActivity(intent);
         });
 
-        Button orderingMenuButton = findViewById(R.id.orderingMenuButton);
+        AppCompatButton orderingMenuButton = findViewById(R.id.orderingMenuButton);
         orderingMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openOrderingMenu();
+            }
+        });
+
+        AppCompatButton settingsButton = findViewById(R.id.settingsMenuButton);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
