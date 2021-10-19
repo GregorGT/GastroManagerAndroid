@@ -19,6 +19,7 @@ public class OrderItemInfo implements Serializable {
     private LocalDateTime dateTime;
     private Integer status;
     private Order order;
+    private String printer;
 
     public OrderItemInfo() {
     }
@@ -124,5 +125,13 @@ public class OrderItemInfo implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public String getPrinter() {
+        return printer;
+    }
+
+    public void setPrinter(String printer) {
+        this.printer = printer;
     }
 }
