@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gatromanagerclient.socket.Client;
+import com.example.gatromanagerclient.ui.splash.SplashActivity;
 import com.example.gatromanagerclient.util.Constants;
 import com.example.gatromanagerclient.util.SaxParserForGastromanager;
 import com.example.gatromanagerclient.util.Util;
@@ -239,7 +240,7 @@ public class MainActivity2 extends AppCompatActivity implements OrderListAdapter
         if(inputOrderId != null) {
             OrderDetailQuery orderDetailQuery = new OrderDetailQuery();
             orderDetailQuery.setHumanreadableId(inputOrderId);
-            orderDetailQuery.setServerName("Here comes the app name");
+            orderDetailQuery.setServerName(SplashActivity.NAME);
             if (floorIdInputTextField.getText() != null) {
                 orderDetailQuery.setFloorId(floorIdInputTextField.getText().toString());
             }
