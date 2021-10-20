@@ -349,6 +349,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                 switch (paramCount) {
                     case 0:
                         requestBody = (OrderItemTransactionInfo) param;
+                        requestBody.setOrderId(String.valueOf(etOrderId.getText()));
                         break;
                     case 1:
                         paymentActivity = (PaymentActivity) param;
