@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.gatromanagerclient.R;
 import com.example.gatromanagerclient.socket.Client;
+import com.example.gatromanagerclient.ui.splash.SplashActivity;
 import com.example.gatromanagerclient.util.Constants;
 import com.example.gatromanagerclient.util.Util;
 import com.gastromanager.models.OrderDetailQuery;
@@ -148,6 +149,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             request.setOrderItemInfo(selectedMenuItemsAdapter.getOrderItems());
             request.setAddTransaction(true);
             request.setTransactionInfo(new TransactionInfo());
+            request.setServerName(SplashActivity.NAME);
             setProgressbar(true);
             new payForItems().execute(request);
         }

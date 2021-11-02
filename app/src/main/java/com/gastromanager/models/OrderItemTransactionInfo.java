@@ -9,7 +9,7 @@ public class OrderItemTransactionInfo implements Serializable {
     private TransactionInfo transactionInfo;
     private Boolean addTransaction;
     private String orderId;
-
+    private String serverName;
 
     public List<OrderItemInfo> getOrderItemInfo() {
         return orderItemInfoList;
@@ -42,4 +42,12 @@ public class OrderItemTransactionInfo implements Serializable {
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
+
+    public String getServerName() {
+        return serverName;
+    }
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
 }
