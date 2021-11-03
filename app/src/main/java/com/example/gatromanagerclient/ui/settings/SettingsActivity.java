@@ -32,6 +32,9 @@ public class SettingsActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private boolean isValidServer = false;
 
+    public static String currency;
+    public static Double salestaxes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
