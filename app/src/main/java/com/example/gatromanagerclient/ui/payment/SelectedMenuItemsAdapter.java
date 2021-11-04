@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.gatromanagerclient.R;
+import com.example.gatromanagerclient.ui.settings.SettingsActivity;
 import com.gastromanager.models.OrderItemInfo;
 
 import java.util.List;
@@ -75,7 +76,7 @@ public class SelectedMenuItemsAdapter extends RecyclerView.Adapter<SelectedMenuI
 
         holder.tvItemName.setText(xmlString);
 
-        holder.tvItemPrice.setText(String.format("%s EURO", orderItem.getPrice().toString()));
+        holder.tvItemPrice.setText(String.format("%s "+ SettingsActivity.currency, orderItem.getPrice().toString()));
 
         holder.ivDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override

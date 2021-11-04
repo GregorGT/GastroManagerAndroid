@@ -218,13 +218,13 @@ public class Client {
 
     public void readQueryPaymentInformation()
     {
-        PaymentInformationQuery qresponse;
+        PaymentInformationQuery response;
         try {
             PaymentInformationQuery piq = new PaymentInformationQuery();
             out.writeObject(piq);
-            qresponse = (PaymentInformationQuery) in.readObject();
-            SettingsActivity.currency = qresponse.getCurrency();
-            SettingsActivity.salestaxes = qresponse.getTaxes();
+            response = (PaymentInformationQuery) in.readObject();
+            SettingsActivity.currency = response.getCurrency();
+            SettingsActivity.salestaxes = response.getTaxes();
             //}
             //System.out.println("Client received order from Server: "+response);
         } catch (IOException | ClassNotFoundException e) {

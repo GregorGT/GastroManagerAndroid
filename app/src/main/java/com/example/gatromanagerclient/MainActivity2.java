@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gatromanagerclient.socket.Client;
+import com.example.gatromanagerclient.ui.payment.PaymentActivity;
 import com.example.gatromanagerclient.ui.splash.SplashActivity;
 import com.example.gatromanagerclient.util.Constants;
 import com.example.gatromanagerclient.util.SaxParserForGastromanager;
@@ -226,6 +227,9 @@ public class MainActivity2 extends AppCompatActivity implements OrderListAdapter
         signOffOrderButton.setOnClickListener(v -> {
             sendSignOffOrderRequest();
         });
+
+        new getPaymentInfo().execute(this);
+
     }
 
     private Boolean checkIfItemIsReadyForSelection(SelectedOrderItem selectedOrderItem) {
@@ -980,6 +984,36 @@ public class MainActivity2 extends AppCompatActivity implements OrderListAdapter
         }
     }
 
+    private class getPaymentInfo extends AsyncTask<Object, Void, Void> {
+        PaymentActivity paymentActivity;
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected Void doInBackground(Object... request) {
+            Iterator iterator = Arrays.stream(request).iterator();
+            int paramCount = 0;
+            while (iterator.hasNext()) {
+                Object param = iterator.next();
+                switch (paramCount) {
+                    case 0:
+                        break;
+                    case 1:
+                        paymentActivity = (PaymentActivity) param;
+                        break;
+                }
+                paramCount++;
+            }
+            Client client = new Client();
+            client.readQueryPaymentInformation();
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
 
     private class RemoveOrderItemTask extends AsyncTask<OrderItemInfo, Void, Void> {
         @RequiresApi(api = Build.VERSION_CODES.N)
