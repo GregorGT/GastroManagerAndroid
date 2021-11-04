@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.gatromanagerclient.R;
+import com.example.gatromanagerclient.ui.settings.SettingsActivity;
 import com.gastromanager.models.OrderItemInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class MenuItemsAdapter extends RecyclerView.Adapter<MenuItemsAdapter.View
 //        } else {
 //            holder.tvItemName.setText(String.format("%s ", splitString[0]));
 //        }
-        holder.tvItemPrice.setText(String.format("%s EURO", orderItem.getPrice().toString()));
+        holder.tvItemPrice.setText(String.format("%s " + SettingsActivity.currency, orderItem.getPrice().toString()));
         if(orderItem.getPayed() == 0){
             holder.llRootLayout.setClickable(true);
             holder.llRootLayout.setBackgroundResource(R.drawable.black_rounder_rectangle);

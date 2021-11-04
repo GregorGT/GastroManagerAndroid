@@ -1,12 +1,16 @@
 package com.example.gatromanagerclient.socket;
 
 import com.example.gatromanagerclient.ui.splash.SplashActivity;
+import android.provider.Settings;
+import com.example.gatromanagerclient.ui.settings.SettingsActivity;
+import com.example.gatromanagerclient.ui.splash.SplashActivity;
 import com.gastromanager.models.HumanReadableIdQuery;
 import com.gastromanager.models.MenuDetail;
 import com.gastromanager.models.OrderDetailQuery;
 import com.gastromanager.models.OrderDetailsView;
 import com.gastromanager.models.OrderItemInfo;
 import com.gastromanager.models.OrderItemTransactionInfo;
+import com.gastromanager.models.PaymentInformationQuery;
 import com.gastromanager.models.SelectedOrderItem;
 import com.gastromanager.models.SignOffOrderInfo;
 
@@ -210,6 +214,24 @@ public class Client {
         }
 
         return startingHumanReadableId;
+    }
+
+    public void readQueryPaymentInformation()
+    {
+        PaymentInformationQuery qresponse;
+        try {
+            PaymentInformationQuery piq = new PaymentInformationQuery();
+            out.writeObject(piq);
+            qresponse = (PaymentInformationQuery) in.readObject();
+            SettingsActivity.currency = qresponse.getCurrency();
+            SettingsActivity.salestaxes = qresponse.getTaxes();
+            //}
+            //System.out.println("Client received order from Server: "+response);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
     }
 
     public MenuDetail getMenuDetails(String request) {
