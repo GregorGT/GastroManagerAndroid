@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.gatromanagerclient.R;
 import com.example.gatromanagerclient.socket.Client;
+import com.example.gatromanagerclient.ui.settings.SettingsActivity;
 import com.example.gatromanagerclient.ui.splash.SplashActivity;
 import com.example.gatromanagerclient.util.Constants;
 import com.example.gatromanagerclient.util.Util;
@@ -29,6 +30,7 @@ import com.gastromanager.models.TransactionInfo;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -43,6 +45,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView ivOrderLeft, ivOrderRight;
     private AppCompatButton btnClear, btnSubmit, btnSelectOrder;
     private TextView tvTotalAmount;
+    private TextView tvTaxes;
+    private TextView tvTotalBill;
     private RecyclerView rvMenuItem, rvSelectedMenuItem;
     private Dialog progressDialog;
     private MenuItemsAdapter menuItemsAdapter;
@@ -82,6 +86,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         etTableId = findViewById(R.id.et_table_Id);
         etOrderId = findViewById(R.id.et_order_Id);
         tvTotalAmount = findViewById(R.id.tv_total_amount);
+        tvTaxes = findViewById(R.id.tv_taxes);
+        tvTotalBill = findViewById(R.id.tv_total_bill);
         tlfFloor = findViewById(R.id.text_layout_floor);
         tlfTable = findViewById(R.id.text_layout_table);
         tlfOrder = findViewById(R.id.text_layout_order_id);
@@ -114,6 +120,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
         btnSelectOrder = findViewById(R.id.btn_select_order);
         btnSelectOrder.setOnClickListener(this);
+
+        new getPaymentInfo().execute(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -266,7 +274,18 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
     private void updateTotalAmountUI() {
         Double totalAmount = selectedMenuItemsAdapter.getTotalAmount(selectedMenuItemsList);
-        tvTotalAmount.setText(String.format("Total: %s Euro", totalAmount));
+        tvTotalAmount.setText(String.format("Sub Total: %s " + SettingsActivity.currency, totalAmount));
+
+        Double taxes = (totalAmount / 100) * (SettingsActivity.salestaxes != null ? SettingsActivity.salestaxes : 8);
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        String tax = "Taxes("+ SettingsActivity.salestaxes+"%) : "+ Double.valueOf(df.format(taxes))+" "+SettingsActivity.currency;
+        tvTaxes.setText(tax);
+
+        Double totalBill = totalAmount + taxes;
+
+        tvTotalBill.setText(String.format("Total: %s " + SettingsActivity.currency, Double.valueOf(df.format(totalBill))));
+
         Util.hideKeyboard(PaymentActivity.this);
     }
 
@@ -371,6 +390,41 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             selectedMenuItemsAdapter.clearList();
             updateTotalAmountUI();
             setEmptyIconsVisibility();
+            setProgressbar(false);
+            super.onPostExecute(result);
+        }
+    }
+
+    private class getPaymentInfo extends AsyncTask<Object, Void, Void> {
+        PaymentActivity paymentActivity;
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected Void doInBackground(Object... request) {
+            Iterator iterator = Arrays.stream(request).iterator();
+            int paramCount = 0;
+            while (iterator.hasNext()) {
+                Object param = iterator.next();
+                switch (paramCount) {
+                    case 0:
+                        break;
+                    case 1:
+                        paymentActivity = (PaymentActivity) param;
+                        break;
+                }
+                paramCount++;
+            }
+            Client client = new Client();
+            client.readQueryPaymentInformation();
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(Void result) {
+
+            System.out.println("Response Curr -> " + SettingsActivity.currency);
+            System.out.println("Response Tax  -> " + SettingsActivity.salestaxes);
             setProgressbar(false);
             super.onPostExecute(result);
         }

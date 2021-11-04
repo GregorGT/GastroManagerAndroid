@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gatromanagerclient.ui.settings.SettingsActivity;
 import com.gastromanager.models.OrderItem;
 import com.gastromanager.models.OrderItemInfo;
 
@@ -74,7 +75,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
         holder.ivPushBtn.setVisibility(View.GONE);
 
         holder.tvItemName.setText(xmlString);
-        holder.tvItemPrice.setText(String.format("%s EURO", orderItem.getPrice().toString()));
+        holder.tvItemPrice.setText(String.format("%s "+ SettingsActivity.currency, orderItem.getPrice().toString()));
         if(orderItem.getPayed() == 0 && orderItem.getPrintStatus() != 1 ){
             holder.llRootLayout.setClickable(true);
             holder.llRootLayout.setBackgroundResource(R.drawable.black_rounder_rectangle);
